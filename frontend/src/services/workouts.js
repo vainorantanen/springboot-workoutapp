@@ -14,20 +14,20 @@ const create = async (object) => {
 
 const addMovement = async (object) => {
     console.log('sending data: ', object)
-    const request = await axios.post(`${baseUrl}addMovementToWorkout`, object)
+    const request = await axios.post(`${baseUrl}addMovementToWorkout/${object.workoutId}`, object)
     console.log('receiving ', request.data)
     return request.data
 }
 
-const remove = (id) => {
-    const request = axios.delete(`${baseUrl}/${id}`)
+const remove = async (id) => {
+    const response = await axios.delete(`${baseUrl}delete/${id}`)
+    return response.data
+}
+
+const updateDescription = (workoutId, newDescription) => {
+    const request = axios.put(`${baseUrl}modifyDescription/${workoutId}`, { newDescription })
     return request.then(response => response.data)
 }
 
-const update = (obj) => {
-    const request = axios.put(`${baseUrl}/${obj.id}`, obj)
-    return request.then(response => response.data)
-}
 
-
-export default { getAll, create, remove, update, addMovement }
+export default { getAll, create, remove, updateDescription, addMovement }

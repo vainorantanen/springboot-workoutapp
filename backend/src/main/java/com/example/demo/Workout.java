@@ -47,4 +47,8 @@ public class Workout {
     public String getDescription() {
         return description;
     }
+
+    public void setDescription(String newDescription) {
+        this.description = newDescription;
+    }
 }

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Divider, Paper, Typography } from '@mui/material';
+import { Button, Container, Divider, Paper, Typography } from '@mui/material';
 import MovementForm from './components/MovementForm';
 import WorkoutForm from './components/WorkoutForm';
 import workoutsService from './services/workouts';
 import movementsService from './services/movements';
 import NewMovementForm from './components/NewMovementForm';
+import ModifyWorkoutDesc from './components/ModifyWorkoutDesc';
 
  const App = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -42,6 +43,20 @@ import NewMovementForm from './components/NewMovementForm';
 
   console.log(workouts)
 
+  const handleDeleteWorkout = async (workoutId) => {
+    try {
+      const res = await workoutsService.remove(workoutId)
+      console.log('res', res)
+      if (res && res === workoutId) {
+        console.log('moi')
+        const newWorkouts = workouts.filter(w => w.id !== workoutId)
+        setWorkouts(newWorkouts)
+      }
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Container>
       <Typography variant="h4" align="center" gutterBottom>
@@ -58,6 +73,10 @@ import NewMovementForm from './components/NewMovementForm';
             Workout {index + 1}: {workout.description} on {workout.date} for{' '}
             {workout.duration} mins
           </Typography>
+          <ModifyWorkoutDesc workout={workout} setWorkouts={setWorkouts} workouts={workouts}/>
+          <Button sx={{ color: 'red' }}
+          onClick={() => handleDeleteWorkout(workout.id)}
+          >Delete workout</Button>
           <MovementForm
             onAddMovement={(movement) => handleAddMovement(movement, index)}
             movements={movements}
