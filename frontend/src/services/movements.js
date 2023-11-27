@@ -12,14 +12,14 @@ const create = async (object) => {
     return request.data
 }
 
-const remove = (id) => {
-    const request = axios.delete(`${baseUrl}/${id}`)
-    return request.then(response => response.data)
+const remove = async (id) => {
+    const response = await axios.delete(`${baseUrl}delete/${id}`)
+    return response.data
 }
 
-const update = (obj) => {
-    const request = axios.put(`${baseUrl}/${obj.id}`, obj)
-    return request.then(response => response.data)
+const update = async (movementId, newMovement) => {
+    const response = await axios.put(`${baseUrl}modify/${movementId}`, { newMovement })
+    return response.data
 }
 
 

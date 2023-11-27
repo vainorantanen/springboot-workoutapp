@@ -27,4 +27,8 @@ public class Movement {
     public String getMovement() {
         return movement;
     }
+
+    public void setMovement(String newMovement) {
+        this.movement = newMovement;
+    }
 }

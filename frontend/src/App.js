@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Container, Divider, Paper, Typography } from '@mui/material';
+import { Button, Container, Divider, Paper, TextField, Typography } from '@mui/material';
 import MovementForm from './components/MovementForm';
 import WorkoutForm from './components/WorkoutForm';
 import workoutsService from './services/workouts';
 import movementsService from './services/movements';
 import NewMovementForm from './components/NewMovementForm';
 import ModifyWorkoutDesc from './components/ModifyWorkoutDesc';
+import ModifyMovement from './components/ModifyMovement';
 
  const App = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -46,11 +47,21 @@ import ModifyWorkoutDesc from './components/ModifyWorkoutDesc';
   const handleDeleteWorkout = async (workoutId) => {
     try {
       const res = await workoutsService.remove(workoutId)
-      console.log('res', res)
       if (res && res === workoutId) {
-        console.log('moi')
         const newWorkouts = workouts.filter(w => w.id !== workoutId)
         setWorkouts(newWorkouts)
+      }
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+  const handleDeleteMovement = async (movementId) => {
+    try {
+      const res = await movementsService.remove(movementId)
+      if (res && res === movementId) {
+        const newMovements = movements.filter(w => w.id !== movementId)
+        setMovements(newMovements)
       }
     } catch(error) {
       console.log(error)
@@ -101,6 +112,8 @@ import ModifyWorkoutDesc from './components/ModifyWorkoutDesc';
       {movements.map(m => (
         <Paper key={m.id} elevation={3} sx={{ my:2, p: 1 }}>
           <Typography variant='h6'>{m.movement}</Typography>
+          <Button sx={{ color: 'red' }} onClick={() => handleDeleteMovement(m.id)}>Delete movement</Button>
+          <ModifyMovement movement={m} movements={movements} setMovements={setMovements}/>
         </Paper>
       ))}
     </Container>
